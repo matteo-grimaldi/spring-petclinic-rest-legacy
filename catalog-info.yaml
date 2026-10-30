@@ -1,0 +1,30 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: spring-petclinic-rest-legacy
+  title: Spring Petclinic REST (Legacy)
+  description: REST version of the Spring Petclinic sample application.
+  annotations:
+    backstage.io/source-location: url:https://github.com/matteo-grimaldi/spring-petclinic-rest-legacy
+  tags:
+    - java
+    - spring-boot
+    - rest
+    - api
+    - docker
+spec:
+  type: service
+  lifecycle: production
+  owner: unknown
+  providesApis:
+    - spring-petclinic-rest-legacy-api
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: spring-petclinic-rest-legacy-api
+  title: Spring Petclinic REST API
+spec:
+  type: openapi
+  definition:
+    $text: ./src/main/resources/api-docs.yml
