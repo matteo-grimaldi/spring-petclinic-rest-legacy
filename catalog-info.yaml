@@ -8,8 +8,7 @@ metadata:
   title: Spring PetClinic REST (legacy)
   description: |
     Existing freeze-fork of spring-petclinic-rest (javax-era legacy specimen).
-    Registered in Developer Hub for Tekton CI and agent demos; source stays
-    at matteo-grimaldi/spring-petclinic-rest-legacy.
+    Registered in Developer Hub for Tekton CI and agent demos;
   annotations:
     backstage.io/source-location: url:https://github.com/matteo-grimaldi/spring-petclinic-rest-legacy
     backstage.io/kubernetes-id: spring-petclinic-rest-legacy
