@@ -1,0 +1,266 @@
+openapi: 3.0.3
+info:
+  title: Spring PetClinic REST API
+  version: 1.0.0
+  description: REST API for the Spring PetClinic sample (owners and pets).
+servers:
+  - url: /
+paths:
+  /api/owners:
+    get:
+      operationId: getOwners
+      summary: Get all owners
+      responses:
+        "200":
+          description: Collection of owners
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OwnerDto"
+        "404":
+          description: No owners found
+    post:
+      operationId: addOwner
+      summary: Create a new owner
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerDto"
+      responses:
+        "201":
+          description: Owner created
+          headers:
+            Location:
+              schema:
+                type: string
+              description: URI of the newly created owner
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OwnerDto"
+        "400":
+          description: Validation errors or duplicate id
+          headers:
+            errors:
+              schema:
+                type: string
+              description: JSON string of validation errors
+  /api/owners/{ownerId}:
+    parameters:
+      - name: ownerId
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      operationId: getOwner
+      summary: Get an owner by id
+      responses:
+        "200":
+          description: Owner found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OwnerDto"
+        "404":
+          description: Owner not found
+    put:
+      operationId: updateOwner
+      summary: Update an owner
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerDto"
+      responses:
+        "204":
+          description: Owner updated
+        "400":
+          description: Validation errors or id mismatch
+          headers:
+            errors:
+              schema:
+                type: string
+              description: JSON string of validation errors
+        "404":
+          description: Owner not found
+    delete:
+      operationId: deleteOwner
+      summary: Delete an owner
+      responses:
+        "204":
+          description: Owner deleted
+        "404":
+          description: Owner not found
+  /api/owners/*/lastname/{lastName}:
+    parameters:
+      - name: lastName
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getOwnersList
+      summary: Search owners by last name
+      responses:
+        "200":
+          description: Collection of matching owners
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OwnerDto"
+        "404":
+          description: No owners found
+  /api/pets:
+    get:
+      operationId: getPets
+      summary: Get all pets
+      responses:
+        "200":
+          description: Collection of pets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PetDto"
+        "404":
+          description: No pets found
+    post:
+      operationId: addPet
+      summary: Create a new pet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetDto"
+      responses:
+        "201":
+          description: Pet created
+          headers:
+            Location:
+              schema:
+                type: string
+              description: URI of the newly created pet
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PetDto"
+        "400":
+          description: Validation errors
+          headers:
+            errors:
+              schema:
+                type: string
+              description: JSON string of validation errors
+  /api/pets/{petId}:
+    parameters:
+      - name: petId
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      operationId: getPet
+      summary: Get a pet by id
+      responses:
+        "200":
+          description: Pet found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PetDto"
+        "404":
+          description: Pet not found
+    put:
+      operationId: updatePet
+      summary: Update a pet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetDto"
+      responses:
+        "204":
+          description: Pet updated
+        "400":
+          description: Validation errors
+          headers:
+            errors:
+              schema:
+                type: string
+              description: JSON string of validation errors
+        "404":
+          description: Pet not found
+    delete:
+      operationId: deletePet
+      summary: Delete a pet
+      responses:
+        "204":
+          description: Pet deleted
+        "404":
+          description: Pet not found
+  /api/pets/pettypes:
+    get:
+      operationId: getPetTypes
+      summary: Get all pet types
+      responses:
+        "200":
+          description: Collection of pet types
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PetTypeDto"
+components:
+  schemas:
+    OwnerDto:
+      type: object
+      description: Owner data transfer object (fields inferred from the Owner model; the DTO class itself could not be read).
+      x-confidence: low
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        telephone:
+          type: string
+    PetDto:
+      type: object
+      description: Pet data transfer object (fields inferred from the Pet model; the DTO class itself could not be read).
+      x-confidence: low
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        birthDate:
+          type: string
+          format: date
+        type:
+          $ref: "#/components/schemas/PetTypeDto"
+    PetTypeDto:
+      type: object
+      description: Pet type data transfer object (fields inferred from NamedEntity; the DTO class itself could not be read).
+      x-confidence: low
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
